@@ -31,6 +31,8 @@
 (eval-when-compile
   (require 'cl-lib))
 
+(require 'consult nil t)
+
 (defconst uniletter-ascii-characters
   '((?A ?B ?C ?D ?E ?F ?G ?H ?I ?J ?K ?L ?M ?N ?O ?P ?Q ?R ?S ?T ?U ?V ?W ?X ?Y ?Z)
     (?a ?b ?c ?d ?e ?f ?g ?h ?i ?j ?k ?l ?m ?n ?o ?p ?q ?r ?s ?t ?u ?v ?w ?x ?y ?z))
@@ -95,6 +97,8 @@
      (?ⓐ ?ⓑ ?ⓒ ?ⓓ ?ⓔ ?ⓕ ?ⓖ ?ⓗ ?ⓘ ?ⓙ ?ⓚ ?ⓛ ?ⓜ ?ⓝ ?ⓞ ?ⓟ ?ⓠ ?ⓡ ?ⓢ ?ⓣ ?ⓤ ?ⓥ ?ⓦ ?ⓧ ?ⓨ ?ⓩ))
     (ascii ,@uniletter-ascii-characters)))
 
+(defvar uniletter--sample-text "This text is converted by uniletter.el")
+
 ;; (defvar uniletter-keymap
 ;;   (eval-when-compile
 ;;     (let ((map (make-keymap)))
@@ -111,14 +115,16 @@ Returns a cons cell (N . INDEX), where:
            if rest
            return (cons n (- 26 (length rest)))))
 
-(defun uniletter-convert-region (start end to)
+(defun uniletter-convert-region (start end to &rest string)
   ""
   (interactive (let ((start (mark)) (end (point)))
                  (unless (and start end)
                    (user-error "The mark is not set now, so there is no region"))
-                 (list start end
-                       (intern (completing-read "Convert to: " uniletter-letters)))))
-  (let* ((string (buffer-substring-no-properties start end))
+                 (let* ((string (buffer-substring-no-properties start end))
+                        (normalized (ucs-normalize-NFKD-string (or string uniletter--sample-text)))
+                        (uniletter--sample-text (nth 0 (split-string (string-trim normalized) "\n"))))
+                   (list start end (uniletter--select-style-name) string))))
+  (let* ((string (or string (buffer-substring-no-properties start end)))
          (normalized (ucs-normalize-NFKD-string string)))
     (when-let ((convert (uniletter-convert normalized to)))
       (message "convreted %s" convert)
@@ -135,12 +141,26 @@ ring and a message is displayed with the converted text."
   (interactive (let* ((start (mark)) (end (point))
                       (string (read-string "Input text: "
                                            (when (region-active-p)
-                                             (buffer-substring-no-properties start end)))))
-                 (list (ucs-normalize-NFKD-string string)
-                       (intern (completing-read "Convert to: " uniletter-letters)))))
+                                             (buffer-substring-no-properties start end))))
+                      (uniletter--sample-text (or (nth 0 (split-string string "\n")) uniletter--sample-text)))
+                 (list (ucs-normalize-NFKD-string string) (uniletter--select-type))))
   (when-let ((converted (uniletter-convert string to)))
     (kill-new converted)
     (message "convreted %s" converted)))
+
+(defun uniletter--select-style-name ()
+  "Select Uniletter style name."
+  (let ((prompt "Convert to: " ))
+    (intern
+     (if (fboundp 'consult--read)
+         (consult--read uniletter-letters :prompt prompt :annotate #'uniletter--annotator)
+       (completing-read prompt uniletter-letters)))))
+
+(defun uniletter--annotator (cand)
+  "Annotator for select Uniletter style name by CAND."
+  (when-let ((type (car-safe (assq (intern cand) uniletter-letters))))
+    (concat (propertize " " 'display '(space :align-to center))
+            (uniletter-convert uniletter--sample-text type))))
 
 (defun uniletter-convert (string to)
   ""

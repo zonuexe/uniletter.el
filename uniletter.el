@@ -3,7 +3,12 @@
 ;; Copyright (C) 2022  USAMI Kenta
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
+;; Created: 1 Apr 2022
+;; Version: 0.0.1
 ;; Keywords: wp
+;; Homepage: https://github.com/zonuexe/uniletter.el
+;; Package-Requires: ((emacs "29.1"))
+;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

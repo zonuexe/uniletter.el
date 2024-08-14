@@ -120,6 +120,23 @@ Returns a cons cell (N . INDEX), where:
       (delete-region start end)
       (insert convert))))
 
+(defun uniletter-copy-converted-text (string to)
+  "Copy the converted representation of STRING to the kill ring.
+TO is a key from the `uniletter-letters` alist, which defines various
+typographical styles, such as squared Latin capitals, regional indicator
+symbols, or mathematical script styles.  This function first normalizes STRING
+using NFKD, then converts it according to TO.  The result is placed in the kill
+ring and a message is displayed with the converted text."
+  (interactive (let* ((start (mark)) (end (point))
+                      (string (read-string "Input text: "
+                                           (when (region-active-p)
+                                             (buffer-substring-no-properties start end)))))
+                 (list (ucs-normalize-NFKD-string string)
+                       (intern (completing-read "Convert to: " uniletter-letters)))))
+  (when-let ((converted (uniletter-convert string to)))
+    (kill-new converted)
+    (message "convreted %s" converted)))
+
 (defun uniletter-convert (string to)
   ""
   (let ((map (alist-get to uniletter-letters)))

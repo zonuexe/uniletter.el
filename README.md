@@ -4,6 +4,8 @@ Help to input Unicode letters.
 
 ## Commands
 
+### `M-x uniletter-copy-converted-text`
+
 ### `M-x uniletter-convert-region`
 
 ## Functions

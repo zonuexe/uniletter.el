@@ -115,8 +115,10 @@ Returns a cons cell (N . INDEX), where:
            if rest
            return (cons n (- 26 (length rest)))))
 
-(defun uniletter-convert-region (start end to &rest string)
-  ""
+(defun uniletter-convert-region (start end style &rest string)
+  "Convert a region of text from START to END using a specified STYLE.
+Normally, you do not need to pass the STRING parameter; it is provided as
+an optimization when called interactively."
   (interactive (let ((start (mark)) (end (point)))
                  (unless (and start end)
                    (user-error "The mark is not set now, so there is no region"))
@@ -126,14 +128,14 @@ Returns a cons cell (N . INDEX), where:
                    (list start end (uniletter--select-style-name) string))))
   (let* ((string (or string (buffer-substring-no-properties start end)))
          (normalized (ucs-normalize-NFKD-string string)))
-    (when-let ((convert (uniletter-convert normalized to)))
+    (when-let ((convert (uniletter-convert normalized style)))
       (message "convreted %s" convert)
       (delete-region start end)
       (insert convert))))
 
-(defun uniletter-copy-converted-text (string to)
+(defun uniletter-copy-converted-text (string style)
   "Copy the converted representation of STRING to the kill ring.
-TO is a key from the `uniletter-letters` alist, which defines various
+STYLE is a key from the `uniletter-letters` alist, which defines various
 typographical styles, such as squared Latin capitals, regional indicator
 symbols, or mathematical script styles.  This function first normalizes STRING
 using NFKD, then converts it according to TO.  The result is placed in the kill
@@ -144,7 +146,7 @@ ring and a message is displayed with the converted text."
                                              (buffer-substring-no-properties start end))))
                       (uniletter--sample-text (or (nth 0 (split-string string "\n")) uniletter--sample-text)))
                  (list (ucs-normalize-NFKD-string string) (uniletter--select-type))))
-  (when-let ((converted (uniletter-convert string to)))
+  (when-let ((converted (uniletter-convert string style)))
     (kill-new converted)
     (message "convreted %s" converted)))
 
@@ -162,11 +164,15 @@ ring and a message is displayed with the converted text."
     (concat (propertize " " 'display '(space :align-to center))
             (uniletter-convert uniletter--sample-text type))))
 
-(defun uniletter-convert (string to)
-  ""
-  (let ((map (alist-get to uniletter-letters)))
+(defun uniletter-convert (string style)
+  "Convert characters in STRING to their STYLE equivalents.
+The conversion uses a predefined map of characters specified by
+`uniletter-letters'.  Each character is checked if it can be converted;
+if so, it is replaced by its styled equivalent.  If STYLE is not a valid key in
+`uniletter-letters', an error is signaled."
+  (let ((map (alist-get style uniletter-letters)))
     (unless map
-      (user-error "`%s' is invalid name for uniletter" to))
+      (user-error "`%s' is invalid name for uniletter" style))
     (concat
      (seq-map
       (lambda (char)

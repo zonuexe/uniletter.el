@@ -14,6 +14,10 @@ Help to input Unicode letters.
 
 ## Supported characters
 
+Currently, this package only supports the 26 letters (A to Z) used in English, known as the [ISO basic Latin alphabet](https://en.wikipedia.org/wiki/ISO_basic_Latin_alphabet).  It is possible to extend these implementations to numbers and Greek letters, but I haven't needed that yet so I haven't implemented it yet.
+
+### Latin alphabet (A to Z)
+
 | Codepoint           | Unicode Name                                | Symbol                            |                                                      |
 |---------------------|---------------------------------------------|-----------------------------------|------------------------------------------------------|
 | `U+0041 - U+005A`   | LATIN CAPITAL LETTER                        | `'ascii`                          | ABCDEFGHIJKLMNOPQRSTUVWXYZ                           |

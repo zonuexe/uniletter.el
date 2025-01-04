@@ -102,11 +102,6 @@
 
 (defvar uniletter--sample-text "This text is converted by uniletter.el")
 
-;; (defvar uniletter-keymap
-;;   (eval-when-compile
-;;     (let ((map (make-keymap)))
-;;       ())))
-
 (defun uniletter--parse (character)
   "Parse the given ASCII CHARACTER and return its type and reverse index.
 Returns a cons cell (N . INDEX), where:
@@ -118,7 +113,7 @@ Returns a cons cell (N . INDEX), where:
            if rest
            return (cons n (- 26 (length rest)))))
 
-(defun uniletter-convert-region (start end style &rest string)
+(defun uniletter-convert-region (start end style &optional string)
   "Convert a region of text from START to END using a specified STYLE.
 Normally, you do not need to pass the STRING parameter; it is provided as
 an optimization when called interactively."
@@ -131,7 +126,7 @@ an optimization when called interactively."
                    (list start end (uniletter--select-style-name) string))))
   (let* ((string (or string (buffer-substring-no-properties start end)))
          (normalized (ucs-normalize-NFKD-string string)))
-    (when-let ((convert (uniletter-convert normalized style)))
+    (when-let* ((convert (uniletter-convert normalized style)))
       (message "convreted %s" convert)
       (delete-region start end)
       (insert convert))))
@@ -148,8 +143,8 @@ ring and a message is displayed with the converted text."
                                            (when (region-active-p)
                                              (buffer-substring-no-properties start end))))
                       (uniletter--sample-text (or (nth 0 (split-string string "\n")) uniletter--sample-text)))
-                 (list (ucs-normalize-NFKD-string string) (uniletter--select-type))))
-  (when-let ((converted (uniletter-convert string style)))
+                 (list (ucs-normalize-NFKD-string string) (uniletter--select-style-name))))
+  (when-let* ((converted (uniletter-convert string style)))
     (kill-new converted)
     (message "convreted %s" converted)))
 
@@ -163,7 +158,7 @@ ring and a message is displayed with the converted text."
 
 (defun uniletter--annotator (cand)
   "Annotator for select Uniletter style name by CAND."
-  (when-let ((type (car-safe (assq (intern cand) uniletter-letters))))
+  (when-let* ((type (car-safe (assq (intern cand) uniletter-letters))))
     (concat (propertize " " 'display '(space :align-to center))
             (uniletter-convert uniletter--sample-text type))))
 
@@ -179,10 +174,11 @@ if so, it is replaced by its styled equivalent.  If STYLE is not a valid key in
     (concat
      (seq-map
       (lambda (char)
-        (if-let (parsed (uniletter--parse char))
+        (if-let* ((parsed (uniletter--parse char)))
             (let ((case (car parsed))
                   (idx (cdr parsed)))
-              (nth idx (or (nth case map) (nth 0 map))))
+              (or (nth idx (or (nth case map) (nth 0 map)))
+                  char))
           char))
       string))))
 

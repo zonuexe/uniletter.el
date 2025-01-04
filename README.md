@@ -22,9 +22,10 @@ Currently, this package only supports the 26 letters (A to Z) used in English, k
 |---------------------|---------------------------------------------|-----------------------------------|------------------------------------------------------|
 | `U+0041 - U+005A`   | LATIN CAPITAL LETTER                        | `'ascii`                          | ABCDEFGHIJKLMNOPQRSTUVWXYZ                           |
 | `U+0061 - U+007A`   | LATIN SMALL LETTER                          | `'ascii`                          | abcdefghijklmnopqrstuvwxyz                           |
-| `U+249C - U+24B5`   | PARENTHESIZED LATIN SMALL LETTER            | `'parenthesized-latin`            | ⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵                           |
-| `U+24B6 - U+24CF`   | CIRCLED LATIN CAPITAL LETTER                | `'circled-latin`                  | ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ                           |
-| `U+24D0 - U+24E9`   | CIRCLED LATIN CAPITAL SMALL                 | `'circled-latin`                  | ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ                           |
+| `U+1D00 - U+1D7F`   | LATIN LETTER SMALL CAPITAL                  | `'small-capital`                  | ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘꞯʀꜱᴛᴜᴠᴡ ʏᴢ                           |
+| `U+249C - U+24B5`   | PARENTHESIZED LATIN SMALL LETTER            | `'parenthesized-latin`            | ⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵ |
+| `U+24B6 - U+24CF`   | CIRCLED LATIN CAPITAL LETTER                | `'circled-latin`                  | ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ |
+| `U+24D0 - U+24E9`   | CIRCLED LATIN CAPITAL SMALL                 | `'circled-latin`                  | ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ |
 | `U+FF21 - U+FF3A`   | FULLWIDTH LATIN CAPITAL                     | `'full-width`                     | ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ |
 | `U+FF41 - U+FF5A`   | FULLWIDTH LATIN SMALL                       | `'full-width`                     | ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ |
 | `U+1D400 - U+1D419` | MATHEMATICAL BOLD CAPITAL                   | `'math-bold`                      | 𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙                           |

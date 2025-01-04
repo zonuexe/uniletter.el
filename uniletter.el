@@ -95,6 +95,9 @@
     (circled-latin
      (?Ⓐ ?Ⓑ ?Ⓒ ?Ⓓ ?Ⓔ ?Ⓕ ?Ⓖ ?Ⓗ ?Ⓘ ?Ⓙ ?Ⓚ ?Ⓛ ?Ⓜ ?Ⓝ ?Ⓞ ?Ⓟ ?Ⓠ ?Ⓡ ?Ⓢ ?Ⓣ ?Ⓤ ?Ⓥ ?Ⓦ ?Ⓧ ?Ⓨ ?Ⓩ)
      (?ⓐ ?ⓑ ?ⓒ ?ⓓ ?ⓔ ?ⓕ ?ⓖ ?ⓗ ?ⓘ ?ⓙ ?ⓚ ?ⓛ ?ⓜ ?ⓝ ?ⓞ ?ⓟ ?ⓠ ?ⓡ ?ⓢ ?ⓣ ?ⓤ ?ⓥ ?ⓦ ?ⓧ ?ⓨ ?ⓩ))
+    (small-capital
+     ()
+     (?ᴀ ?ʙ ?ᴄ ?ᴅ ?ᴇ ?ꜰ ?ɢ ?ʜ ?ɪ ?ᴊ ?ᴋ ?ʟ ?ᴍ ?ɴ ?ᴏ ?ᴘ ?ꞯ ?ʀ ?ꜱ ?ᴛ ?ᴜ ?ᴠ ?ᴡ nil ?ʏ ?ᴢ))
     (ascii ,@uniletter-ascii-characters)))
 
 (defvar uniletter--sample-text "This text is converted by uniletter.el")
@@ -183,10 +186,11 @@ if so, it is replaced by its styled equivalent.  If STYLE is not a valid key in
           char))
       string))))
 
-;; (uniletter-convert "abc" :ascii)
-;; (uniletter-convert "abc" :circled-latin)
-;; (uniletter-convert "ABC あいう abc" :circled-latin)
-;; (uniletter-convert "ABC あいう abc" :math-double-struck)
+;; (uniletter-convert "abc" 'ascii)
+;; (uniletter-convert "abc" 'circled-latin)
+;; (uniletter-convert "ABC あいう abc" 'circled-latin)
+;; (uniletter-convert "ABC あいう abc" 'math-double-struck)
+;; (uniletter-convert "ABCXYZ あいう abcxyz" 'small-capital)
 
 (provide 'uniletter)
 ;;; uniletter.el ends here

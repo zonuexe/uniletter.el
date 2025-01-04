@@ -12,7 +12,23 @@ Help to input Unicode letters.
 
 ### `M-x uniletter-copy-converted-text`
 
+Converts the characters you type to make them easier to copy and paste, and saves them in the kill ring.
+
 ### `M-x uniletter-convert-region`
+
+Converts and replaces characters in the selected region.
+
+### `M-x uniletter-insert-mode-select-style`
+
+Select uniletter style and enable `uniletter-insert-mode`.
+
+### `M-x uniletter-insert-mode`
+
+When you press a key on the keyboard, the character in the selected style is entered.
+
+Typing `C-u 5 a` will type that character five times.
+
+You can disable the mode by running `M-x uniletter-insert-mode` again to toggle its state.
 
 ## Functions
 

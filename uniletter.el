@@ -33,10 +33,11 @@
 
 (require 'consult nil t)
 
-(defconst uniletter-ascii-characters
-  '((?A ?B ?C ?D ?E ?F ?G ?H ?I ?J ?K ?L ?M ?N ?O ?P ?Q ?R ?S ?T ?U ?V ?W ?X ?Y ?Z)
-    (?a ?b ?c ?d ?e ?f ?g ?h ?i ?j ?k ?l ?m ?n ?o ?p ?q ?r ?s ?t ?u ?v ?w ?x ?y ?z))
-  "List of ASCII characters.")
+(eval-and-compile
+  (defconst uniletter-ascii-characters
+    '((?A ?B ?C ?D ?E ?F ?G ?H ?I ?J ?K ?L ?M ?N ?O ?P ?Q ?R ?S ?T ?U ?V ?W ?X ?Y ?Z)
+      (?a ?b ?c ?d ?e ?f ?g ?h ?i ?j ?k ?l ?m ?n ?o ?p ?q ?r ?s ?t ?u ?v ?w ?x ?y ?z))
+    "List of ASCII characters."))
 
 (defvar uniletter-letters
   `((squared-latin-capital
@@ -187,6 +188,54 @@ if so, it is replaced by its styled equivalent.  If STYLE is not a valid key in
 ;; (uniletter-convert "ABC あいう abc" 'circled-latin)
 ;; (uniletter-convert "ABC あいう abc" 'math-double-struck)
 ;; (uniletter-convert "ABCXYZ あいう abcxyz" 'small-capital)
+
+
+;; Minor modes
+(defvar uniletter-keymap
+  (eval-when-compile
+    (let ((map (make-keymap)))
+      (prog1 map
+        (dolist (key (append (nth 0 uniletter-ascii-characters) (nth 1 uniletter-ascii-characters)))
+          (define-key map (kbd (char-to-string key)) #'uniletter-self-insert))))))
+
+(defvar uniletter-insert-mode-lighter-template " UNi[%s]")
+(defvar uniletter-insert-mode-lighter)
+(defvar uniletter-insert-mode-style 'math-script)
+
+(define-minor-mode uniletter-insert-mode
+  "Minor mode for input uniletters."
+  :keymap uniletter-keymap
+  (when uniletter-insert-mode
+    (uniletter-insert-mode-select-style uniletter-insert-mode-style)))
+
+(defun uniletter-insert-mode-lighter ()
+  "Make lighter string for `uniletter-insert-mode'."
+  (format uniletter-insert-mode-lighter-template uniletter-insert-mode-style))
+
+(defun uniletter-self-insert (n &optional character)
+  "Insert the CHARACTER N times."
+  (interactive (list (prefix-numeric-value current-prefix-arg)
+                     last-command-event))
+  (unless character
+    (setq character last-command-event))
+  (when (< n 0)
+    (error "Negative repetition argument %s" n))
+  (unless (characterp character)
+    (error "The event is not a character: %s" character))
+  (insert (uniletter-convert (make-string n character) uniletter-insert-mode-style)))
+
+(defun uniletter-insert-mode-select-style (style &optional interactive)
+  "Select the given STYLE for `uniletter-self-insert'.
+If INTERACTIVE is non-NIL, display a confirmation message."
+  (interactive (list (uniletter--select-style-name) t))
+  (let ((activated uniletter-insert-mode))
+    (unless activated (uniletter-insert-mode +1))
+    (setq uniletter-insert-mode-style style)
+    (setq uniletter-insert-mode-lighter (when uniletter-insert-mode (uniletter-insert-mode-lighter)))
+    (when interactive
+      (if activated
+           (message "Selected style %S for uniletter-insert-mode." style)
+        (message "Enabled uniletter-insert-mode in the current buffer and selected style %S." style)))))
 
 (provide 'uniletter)
 ;;; uniletter.el ends here

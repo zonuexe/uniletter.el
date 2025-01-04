@@ -2,6 +2,12 @@
 
 Help to input Unicode letters.
 
+> [!CAUTION]
+> While these characters are frequently encountered on social media, their use in non-mathematical contexts should be avoided.
+>
+> [PDUTR #27: Unicode 3.1](https://www.unicode.org/reports/tr27/tr27-1.html) says follows:
+>> The alphabets in this block encode only semantic distinction, but not which specific font will be used to supply the actual plain, script, Fraktur, double-struck, sans-serif, or monospace glyphs. Especially the script and double-struck styles can show considerable variation across fonts. Characters from the Mathematical Alphanumeric Symbols block are not to be used for nonmathematical styled text.
+
 ## Commands
 
 ### `M-x uniletter-copy-converted-text`
@@ -59,3 +65,22 @@ Currently, this package only supports the 26 letters (A to Z) used in English, k
 | `U+1F150 - U+1F169` | NEGATIVE CIRCLED LATIN CAPITAL LETTER       | `'negative-circled-latin-capital` | 🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩                           |
 | `U+1F170 - U+1F189` | NEGATIVE SQUARED LATIN CAPITAL LETTER       | `'negative-squared-latin-capital` | 🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉                           |
 | `U+1F1E6 - U+1F1FF` | REGIONAL INDICATOR SYMBOL LETTER            | `'regional-indicator-symbol`      | 🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉  |
+
+## Copyright
+
+This package is licensed under [GNU General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0).
+
+    uniletter.el  Copyright (C) 2024  USAMI Kenta
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.

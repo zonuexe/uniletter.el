@@ -220,6 +220,8 @@ if so, it is replaced by its styled equivalent.  If STYLE is not a valid key in
     (setq character last-command-event))
   (when (< n 0)
     (error "Negative repetition argument %s" n))
+  (when (< n 2)
+    (undo-auto-amalgamate))
   (unless (characterp character)
     (error "The event is not a character: %s" character))
   (insert (uniletter-convert (make-string n character) uniletter-insert-mode-style)))
